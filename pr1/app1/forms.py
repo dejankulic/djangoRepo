@@ -1,14 +1,16 @@
 from django.forms import ModelForm
-from .models import Movie, Comment
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.contrib.auth.models import User
+from .models import Movie
 
-class MovieForm(ModelForm):
+class MovieForm(forms.ModelForm):
     class Meta:
         model = Movie
         fields = ['movieName', 'rating']
 
-
-class CommentForm(ModelForm):
+class CreateUserForm(UserCreationForm):
     class Meta:
-        model = Comment
-        fields = ['content']
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 
