@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
+@permission_required('app1.edit_comment')
 def editcomment(request, id):
     comment = Comment.objects.get(id = id)
     form = CommentForm(instance = comment)
@@ -19,6 +20,7 @@ def editcomment(request, id):
     context = {'form':form}
     return render(request, 'addcomment.html', context)
 
+@permission_required('app1.edit_movie')
 def edit(request, id):
     movie = Movie.objects.get(id=id)
     form = MovieForm(instance = movie)
@@ -58,19 +60,23 @@ def comment(request,id):
     tmp = get_object_or_404(Comment, id = id)
     return render(request,'comment.html',{'comment':tmp})
 
+@permission_required('app1.add_movie')
 def addmovie(request):
     form = MovieForm(request.POST)
     if form.is_valid():
         mov = Movie(movieName=form.cleaned_data['movieName'], rating=form.cleaned_data['rating'], owner= request.user)
         mov.save()
+
     context={'form':form}
     return render(request,'addmovie.html',context)
 
+@permission_required('app1.add_comment')
 def addcomment(request):
     form = CommentForm(request.POST)
     if form.is_valid():
         comm = Comment(movie=form.cleaned_data['movie'] ,content=form.cleaned_data['content'],owner = request.user)
         comm.save()
+
     context={'form':form}
     return render(request,'addcomment.html',context)
 

@@ -20,15 +20,17 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'app1:movies' %}">List of movies</a>
       </li>
+      {% if perms.app1.add_movie %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'app1:add' %}">Add movie</a>
       </li>
+      {% endif %}
+      {% if perms.app1.add_comment %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'app1:addcomment' %}">Add comment</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Add movie</a>
-      </li>
+      {% endif %}
+
     </ul>
   </div>
 

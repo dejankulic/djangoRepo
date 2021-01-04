@@ -4,10 +4,11 @@
         <div class ="card-header">
             <h1>
               {{ movie.movieName }}
+               {% if perms.app1.change_movie %}
                 <a href="{% url 'app1:edit' movie.id %}">
                     <span class="badge badge-primary">Edit</span>
                 </a>
-                </a>
+                {% endif %}
             </h1>
         </div>
         <div class="card-body">

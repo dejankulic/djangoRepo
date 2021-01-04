@@ -4,9 +4,11 @@
         <div class ="card-header">
             <h1>
               {{ movie.movieName }}
+               {% if perms.app1.change_comment %}
                 <a href="{% url 'app1:editcomment' comment.id %}">
                     <span class="badge badge-primary">Edit</span>
                 </a>
+                {% endif %}
             </h1>
         </div>
         <div class="card-body">

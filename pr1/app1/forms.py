@@ -5,12 +5,14 @@ from django.contrib.auth.models import User
 from .models import Movie,Comment
 
 class MovieForm(forms.ModelForm):
+
     class Meta:
         model = Movie
         fields = ['movieName', 'rating']
 
 
 class CommentForm(forms.ModelForm):
+
     class Meta:
         model = Comment
         fields = ['content','movie']
