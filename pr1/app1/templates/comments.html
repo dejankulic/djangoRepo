@@ -1,0 +1,12 @@
+{% extends 'movie.html' %}
+{% block content %}
+
+    <div class="list-group">
+        {% for comment in comments %}
+            <a class="list-group-item list-group-item-action" href="{% url 'app1:comment' comment.id %}">
+                {{ comment.content }}
+            </a>
+        {% endfor %}
+    </div>
+
+{% endblock %}

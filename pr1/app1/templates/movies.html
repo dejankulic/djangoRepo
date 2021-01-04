@@ -2,6 +2,9 @@
 {% block content %}
 
     <div class="list-group">
+        <br>
+            <h1>Lista filmova:</h1>
+        <br>
         {% for movie in movies %}
             <a class="list-group-item list-group-item-action" href="{% url 'app1:movie' movie.id %}">
                 {{ movie.movieName }}

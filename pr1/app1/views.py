@@ -1,19 +1,62 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from.models import Movie,Comment
-from .forms import CreateUserForm,MovieForm
+from .forms import CommentForm,CreateUserForm,MovieForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
+def editcomment(request, id):
+    comment = Comment.objects.get(id = id)
+    form = CommentForm(instance = comment)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance = comment)
+        if form.is_valid():
+            form.save()
+
+    context = {'form':form}
+    return render(request, 'addcomment.html', context)
+
+def edit(request, id):
+    movie = Movie.objects.get(id=id)
+    form = MovieForm(instance = movie)
+
+    if request.method == 'POST':
+        form = MovieForm(request.POST, instance=movie)
+        if form.is_valid():
+            form.save()
+
+    context = {'form':form}
+    return render(request, 'addmovie.html',context)
+
+@login_required
 def movies(request):
     tmp = Movie.objects.all()
     return render(request, 'movies.html', {'movies': tmp})
 
+@login_required
 def movie(request, id):
+    comments = []
     tmp = get_object_or_404(Movie, id=id)
-    return render(request,'movie.html',{'movie':tmp, 'page_title':tmp.movieName})
+    comments = Comment.objects.all()
+    komentari = []
+    for kom in comments:
+        if kom.movie_id == id:
+            komentari.append(kom)
+
+    return render(request,'movie.html',{'movie':tmp, 'page_title':tmp.movieName, 'comments':komentari})
+
+@login_required
+def comments(request):
+    tmp = Comment.objects.all()
+    return render(request,'comments.html',{'comments': tmp})
+
+@login_required
+def comment(request,id):
+    tmp = get_object_or_404(Comment, id = id)
+    return render(request,'comment.html',{'comment':tmp})
 
 def addmovie(request):
     form = MovieForm(request.POST)
@@ -23,6 +66,15 @@ def addmovie(request):
     context={'form':form}
     return render(request,'addmovie.html',context)
 
+def addcomment(request):
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comm = Comment(movie=form.cleaned_data['movie'] ,content=form.cleaned_data['content'],owner = request.user)
+        comm.save()
+    context={'form':form}
+    return render(request,'addcomment.html',context)
+
+@login_required
 def home(request):
     return render(request, 'dashboard.html')
 
@@ -49,7 +101,7 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('app1:index')
         else:
             messages.info(request, 'Username or password is incorrect')
 
@@ -60,5 +112,6 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def indexpage(request):
     return render(request, 'index.html')

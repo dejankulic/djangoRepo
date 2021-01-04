@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Movie(models.Model):
 
-    movieName = models.TextField()
+    movieName = models.CharField(max_length=15)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     rating = models.DecimalField(default=0, max_digits=3, decimal_places=1)
