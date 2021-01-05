@@ -9,6 +9,8 @@ urlpatterns = [
     path('logout/', views.logoutUser, name="logout"),
     path('', views.home,name='index'),
 
+    path('deletecomment/<int:id>', views.deletecomment, name="deletecomment"),
+    path('deletemovie/<int:id>', views.deletemovie, name="deletemovie"),
     path('comment/<int:id>/',views.comment,name="comment"),
     path('addcomment/',views.addcomment,name="addcomment"),
     path('editcomment/<int:id>',views.editcomment,name="editcomment"),

@@ -7,6 +7,28 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
+@permission_required('app1.delete_comment')
+def deletecomment(request,id):
+    comment = Comment.objects.get(id=id)
+    if request.method == "POST":
+        comment.delete()
+        return redirect('app1:index')
+
+    context = {'comment':comment}
+    return render(request, 'deletecomment.html', context)
+
+
+@permission_required('app1.delete_movie')
+def deletemovie(request, id):
+    movie = Movie.objects.get(id=id)
+    if request.method == "POST":
+        movie.delete()
+        return redirect('app1:index')
+
+    context = {'movie':movie}
+    return render(request, 'deletemovie.html',context)
+
+
 @permission_required('app1.edit_comment')
 def editcomment(request, id):
     comment = Comment.objects.get(id = id)
